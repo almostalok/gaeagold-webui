@@ -1,0 +1,319 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+@tailwind utilities;
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+
+  /* placeholder names for clarity (will be overwritten by next/font on body) */
+  --font-mont: 'Montserrat';
+  --font-geist-sans: 'Geist Sans';
+  --font-geist-mono: 'Geist Mono';
+  --radius: 0.625rem;
+  --background: oklch(0% 0 0);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.577 0.245 27.325);
+  --warning: oklch(65.965% 0.13491 86.548);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.984 0.003 247.858);
+  --sidebar-foreground: oklch(0.129 0.042 264.695);
+  --sidebar-primary: oklch(0.208 0.042 265.755);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.968 0.007 247.896);
+  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
+  --sidebar-border: oklch(0.929 0.013 255.508);
+  --sidebar-ring: oklch(0.704 0.04 256.788);
+}
+
+.light {
+  /* LIGHT THEME */
+  --background: oklch(100% 0.00011 271.152);
+  --foreground: oklch(0% 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.129 0.042 264.695);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.129 0.042 264.695);
+  --primary: oklch(0.208 0.042 265.755);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --secondary: oklch(0.968 0.007 247.896);
+  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --muted: oklch(0.968 0.007 247.896);
+  --muted-foreground: oklch(0.554 0.046 257.417);
+  --accent: oklch(0.968 0.007 247.896);
+  --accent-foreground: oklch(0.208 0.042 265.755);
+  --border: oklch(0.929 0.013 255.508);
+  --input: oklch(0.929 0.013 255.508);
+  --ring: oklch(0.704 0.04 256.788);
+}
+
+.dark {
+  --background: oklch(0% 0 0);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --warning: oklch(70% 0.15 85); /* slightly brighter for dark mode */
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html,
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* 2) set font-sans from the font variable where next/font will inject it
+   .set-root-font should be applied on the same element that holds next/font variables (we used body) */
+@layer utilities {
+  .set-root-font {
+    --font-sans: var(--font-mont); /* default wired to Montserrat variable */
+    --font-mono: var(--font-geist-mono);
+  }
+
+  /* class switches: add this class to any container to switch fonts inside it */
+  .font-geist {
+    --font-sans: var(--font-geist-sans);
+  }
+
+  .font-mont {
+    --font-sans: var(--font-mont);
+  }
+
+  .font-mono {
+    --font-mono: var(--font-geist-mono);
+  }
+}
+
+.icon-box {
+  @apply border border-gray-600 rounded-md p-1 inline-flex items-center justify-center;
+}
+
+.display-icon {
+  @apply rounded-md p-1 inline-flex items-center justify-center;
+}
+
+/* 1. Light border elevation */
+.elevate-border {
+  @apply border rounded-lg transition;
+}
+.elevate-border:hover {
+  @apply border-white/80;
+}
+
+/* 2. Glow shadow elevation */
+.elevate-shadow {
+  @apply rounded-lg transition;
+  /* Start with no glow */
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0);
+}
+.elevate-shadow:hover {
+  /* Glow on hover */
+  box-shadow: 0 4px 26px rgba(255, 255, 255, 0.25);
+}
+
+/* 3. Background pop (dark UI card hover) */
+.elevate-bg {
+  @apply rounded-lg transition;
+}
+.elevate-bg:hover {
+  @apply bg-zinc-900;
+}
+
+/* 4. Ring highlight elevation */
+.elevate-ring {
+  @apply ring-1 ring-white/10 rounded-lg transition;
+}
+.elevate-ring:hover {
+  @apply ring-white/60; /* changed from 100 → subtle UI-friendly */
+}
+
+.elevate-ring:active {
+  @apply ring-white/40;
+  transform: scale(0.99); /* slight press-down effect */
+  opacity: 1; /* subtle dim */
+}
+
+/* 5. Scale-up hover elevation */
+.elevate-scale {
+  @apply transition-transform;
+}
+.elevate-scale:hover {
+  transform: scale(1.02);
+}
+
+/* --- OPTIONAL: combo utilities --- */
+
+/* 6. Combined elevation (bg + glow + ring + scale) */
+.elevate-combo {
+  @apply rounded-lg ring-1 transition-all;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0);
+}
+.elevate-combo:hover {
+  @apply bg-zinc-800 ring-white/90;
+  transform: scale(1.02);
+  box-shadow: 0 1px 26px rgba(255, 255, 255, 0.01);
+}
+
+/* Theme trainsition utility for smooth theme changes (e.g., light/dark mode) */
+.theme-transition {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Toast styles  */
+.toast-success {
+  @apply border-green-500 bg-green-500/10 text-green-600 dark:text-green-400;
+}
+
+.toast-error {
+  @apply border-destructive bg-destructive/10 text-destructive;
+}
+
+.toast-info {
+  @apply border-blue-500 bg-blue-500/10 text-blue-600 dark:text-blue-400;
+}
+
+.toast-warning {
+  @apply border-warning bg-warning/10 text-warning;
+}
+
+.toast-loading {
+  @apply border-primary bg-primary/10 text-primary;
+}
+
+/* Ag grid themes */
+.ag-theme-alpine {
+  --ag-background-color: transparent;
+  --ag-foreground-color: var(--foreground);
+  --ag-border-color: var(--border);
+  --ag-header-background-color: var(--card);
+  --ag-odd-row-background-color: transparent;
+}
+
+.ag-theme-alpine-dark {
+  --ag-background-color: transparent;
+  --ag-foreground-color: var(--foreground);
+  --ag-border-color: var(--border);
+  --ag-header-background-color: var(--card);
+  --ag-odd-row-background-color: transparent;
+}
+
+.global-container {
+  width: 90vw;
+  max-width: 90vw;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Make the content area grow so footer gets pushed down */
+.body {
+  flex: 1; /* give your Body component this class or style */
+}
