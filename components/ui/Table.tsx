@@ -1,35 +1,36 @@
 'use client';
 
 import { AgGridReact } from 'ag-grid-react';
+import type { ColDef, ColGroupDef } from 'ag-grid-community';
 import { useMemo } from 'react';
-import { RowClickedEvent } from 'ag-grid-community';
 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-community/styles/ag-theme-alpine-dark.css';
 
-interface AgGridTableProps {
-  rowData?: unknown[];
-  columnDefs?: unknown[];
+type TableProps<T> = {
+  rowData: T[];
+  columnDefs: (ColDef<T> | ColGroupDef<T>)[];
   loading?: boolean;
-  onRowClicked?: (event: RowClickedEvent) => void;
-}
+  onRowClicked?: (row: T) => void;
+};
 
-export default function AgGridTable({
-  rowData = [],
-  columnDefs = [],
+export default function Table<T>({
+  rowData,
+  columnDefs,
   loading = false,
   onRowClicked,
-}: AgGridTableProps) {
-  const defaultColDef = useMemo(() => {
-    return {
+}: TableProps<T>) {
+  const defaultColDef = useMemo<ColDef<T>>(
+    () => ({
       flex: 1,
       minWidth: 120,
       sortable: true,
       filter: true,
       resizable: true,
-    };
-  }, []);
+    }),
+    []
+  );
 
   const themeClass =
     typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
@@ -38,7 +39,7 @@ export default function AgGridTable({
 
   return (
     <div className={themeClass} style={{ width: '100%', height: 500 }}>
-      <AgGridReact
+      <AgGridReact<T>
         rowData={rowData}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
@@ -46,9 +47,9 @@ export default function AgGridTable({
         paginationPageSize={10}
         animateRows
         rowSelection="multiple"
-        onRowClicked={onRowClicked}
-        overlayLoadingTemplate={'<span class="ag-overlay-loading-center">Loading...</span>'}
-        overlayNoRowsTemplate={'<span class="ag-overlay-loading-center">No data found</span>'}
+        onRowClicked={(event) => event.data !== undefined && onRowClicked?.(event.data)}
+        overlayLoadingTemplate={'<span>Loading...</span>'}
+        overlayNoRowsTemplate={'<span>No data</span>'}
         loading={loading}
       />
     </div>
