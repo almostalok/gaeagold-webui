@@ -1,30 +1,24 @@
 import type { Metadata } from 'next';
 import Providers from './providers/Providers';
 import { Toaster } from 'sonner';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { Geist, Geist_Mono, Montserrat } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
+  variable: '--font-sans',
   subsets: ['latin'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
-
-const montserrat = Montserrat({
-  variable: '--font-mont',
+const monoFont = JetBrains_Mono({
+  variable: '--font-mono',
   subsets: ['latin'],
 });
 
 //Meta-data allows to change the application Title and description
 export const metadata: Metadata = {
-  title: 'Gaeagold | Purity defined',
-  description: 'Developed by Chandra M. LLP',
+  title: 'GAEA GOLD | Premium Agricultural Exports',
+  description: 'B2B and B2C platform for premium agricultural products and inquiry-based trade.',
 };
 
 export default function RootLayout({
@@ -35,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${montserrat.variable} ${geistSans.variable} ${geistMono.variable} antialiased set-root-font theme-transition global-container`}
+        className={`${inter.variable} ${monoFont.variable} antialiased theme-transition global-container`}
       >
         <Providers>
           {children}

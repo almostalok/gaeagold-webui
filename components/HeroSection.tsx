@@ -1,41 +1,107 @@
-import { ArrowRight, Leaf } from 'lucide-react';
+import { ArrowRight, Leaf, ShieldCheck, Sun } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
+import Image from 'next/image';
 
 export default function HeroSection() {
   return (
-    <div>
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232c1810'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
-        }}
-      />
-      <div className="relative mx-auto max-w-4xl px-4 py-24 text-center sm:px-6 sm:py-32 lg:py-40">
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#4a6741]/20 bg-white/60 px-4 py-2 text-sm font-medium text-[#4a6741] backdrop-blur">
-          <Leaf className="h-4 w-4" />
-          Rooted in tradition, meticulously crafted for you
+    <section className="relative w-full min-h-[100dvh] flex flex-col justify-center overflow-hidden bg-[#102f23]">
+      {/* Immersive Background */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/premium_hero_bg.png"
+          alt="Premium traditional Indian spices and agricultural products"
+          fill
+          priority
+          className="object-cover object-center opacity-60"
+        />
+        {/* Soft, deep gradient instead of stark cuts */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#102f23] via-[#102f23]/40 to-[#102f23]/80"></div>
+        
+        {/* Ambient light glow (Mac style) */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#b48344]/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pt-32 pb-24 flex flex-col items-center mt-12 md:mt-20">
+        
+        {/* Clean Editorial Badge */}
+        <div className="mb-10 flex items-center justify-center gap-4 w-fit">
+           <div className="h-[1px] w-8 md:w-16 bg-[#b48344]/40" />
+           <Leaf className="w-4 h-4 text-[#b48344]" strokeWidth={1.5} />
+           <span className="text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] text-[#e6d5bf]">Rooted in Tradition</span>
+           <div className="h-[1px] w-8 md:w-16 bg-[#b48344]/40" />
         </div>
-        <h1 className="text-5xl font-bold leading-[1.1] tracking-tight text-[#2c1810] sm:text-6xl lg:text-7xl">
-          From the farm
-          <br />
-          <span className="text-[#4a6741]">to your kitchen</span>
+        
+        {/* Typography */}
+        <h1 className="text-center font-heading text-5xl sm:text-6xl md:text-7xl lg:text-[7rem] font-medium leading-[1.05] tracking-tight text-white mb-8 filter drop-shadow-sm">
+          From Indian farms <br className="hidden sm:block" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e6d5bf] to-[#b48344]">to your heritage</span>
         </h1>
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#6b5a48]">
-          Gaea Gold Harvest brings you premium spices, grains, ghee, and processed food ingredients
-          — sourced directly from Indian farms with care for purity and tradition.
+        
+        <p className="mx-auto max-w-2xl text-center text-base md:text-lg font-light leading-relaxed text-white/80 mb-14 px-4">
+          Gaea Gold Harvest brings you premium spices, native grains, pure ghee, and unadulterated ingredients. Meticulously sourced for families that value tradition.
         </p>
-        <div className="mt-10">
+        
+        {/* Action Buttons with soft radii */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-xs sm:max-w-none justify-center items-center">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 rounded-full bg-[#4a6741] px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-[#3d5636] hover:shadow-xl"
+            className="group flex w-full sm:w-auto items-center justify-center gap-3 bg-white text-[#102f23] px-8 py-4 rounded-full text-[13px] font-semibold shadow-[0_8px_30px_rgba(255,255,255,0.15)] transition-all duration-300 hover:shadow-[0_8px_40px_rgba(255,255,255,0.25)] hover:-translate-y-0.5"
           >
-            Explore Products
-            <ArrowRight className="h-5 w-5" />
+            <span>Explore Collection</span>
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+          <Link
+            href="/about"
+            className="flex w-full sm:w-auto items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 px-8 py-4 rounded-full text-[13px] font-semibold text-white transition-all duration-300 hover:bg-white/20"
+          >
+             Our Story
           </Link>
         </div>
+
+        {/* Floating Glass Features Bar (fixes mobile layout distortion) */}
+        <div className="mt-20 sm:mt-32 w-full max-w-4xl mx-auto">
+           <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl sm:rounded-full px-8 py-8 sm:py-6 shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+              
+              <div className="flex items-center gap-4 group">
+                 <div className="bg-[#b48344]/20 p-3 rounded-full border border-[#b48344]/30">
+                    <Sun className="h-5 w-5 text-[#e6d5bf] stroke-[1.5]" />
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-[11px] uppercase tracking-widest font-semibold text-white">Sun Dried</span>
+                    <span className="text-[10px] text-white/50">Traditional processing</span>
+                 </div>
+              </div>
+              
+              <div className="hidden sm:block w-[1px] h-10 bg-white/10"></div>
+              <div className="w-full h-[1px] sm:hidden bg-white/10"></div>
+              
+              <div className="flex items-center gap-4 group">
+                 <div className="bg-[#b48344]/20 p-3 rounded-full border border-[#b48344]/30">
+                    <ShieldCheck className="h-5 w-5 text-[#e6d5bf] stroke-[1.5]" />
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-[11px] uppercase tracking-widest font-semibold text-white">100% Pure</span>
+                    <span className="text-[10px] text-white/50">No artificial additives</span>
+                 </div>
+              </div>
+              
+              <div className="hidden sm:block w-[1px] h-10 bg-white/10"></div>
+              <div className="w-full h-[1px] sm:hidden bg-white/10"></div>
+              
+              <div className="flex items-center gap-4 group">
+                 <div className="bg-[#b48344]/20 p-3 rounded-full border border-[#b48344]/30">
+                    <Leaf className="h-5 w-5 text-[#e6d5bf] stroke-[1.5]" />
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-[11px] uppercase tracking-widest font-semibold text-white">Farm Direct</span>
+                    <span className="text-[10px] text-white/50">Ethically sourced</span>
+                 </div>
+              </div>
+
+           </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

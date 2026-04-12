@@ -46,34 +46,30 @@
 }
 
 :root {
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  --font-sans: var(--font-sans), 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  --font-heading: var(--font-sans), 'Inter', system-ui, -apple-system, sans-serif;
+  --radius: 0.5rem;
+  --background: #f8f7f5;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #2e4531;
+  --primary-foreground: #f8f7f5;
+  --secondary: #b48344;
+  --secondary-foreground: #1a1a1a;
 
-  /* placeholder names for clarity (will be overwritten by next/font on body) */
-  --font-mont: 'Montserrat';
-  --font-geist-sans: 'Geist Sans';
-  --font-geist-mono: 'Geist Mono';
-  --radius: 0.625rem;
-  --background: oklch(0% 0 0);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(38.186% 0.12543 141.94);
-  --primary-foreground: oklch(96.054% 0.19942 108.423);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.577 0.245 27.325);
-  --warning: oklch(65.965% 0.13491 86.548);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  --muted: #f2f1f0;
+  --muted-foreground: #6b6b6b;
+  --accent: #e6d5bf;
+  --accent-foreground: #1a1a1a;
+  --destructive: #e74c3c;
+  --warning: #e67e22;
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #b48344;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -91,45 +87,45 @@
 
 .light {
   /* LIGHT THEME */
-  --background: oklch(100% 0.00011 271.152);
-  --foreground: oklch(0% 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(96.054% 0.19942 108.423);
-  --primary-foreground: oklch(38.186% 0.12543 141.94);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --background: #f8f7f5;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #2e4531;
+  --primary-foreground: #f8f7f5;
+  --secondary: #b48344;
+  --secondary-foreground: #1a1a1a;
+  --muted: #f2f1f0;
+  --muted-foreground: #6b6b6b;
+  --accent: #e6d5bf;
+  --accent-foreground: #1a1a1a;
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #b48344;
 }
 
 .dark {
-  --background: oklch(0% 0 0);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(38.186% 0.12543 141.94);
-  --primary-foreground: oklch(96.054% 0.19942 108.423);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --warning: oklch(70% 0.15 85); /* slightly brighter for dark mode */
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  --background: #102f23;
+  --foreground: #f8f7f5;
+  --card: #173d2d;
+  --card-foreground: #f8f7f5;
+  --popover: #173d2d;
+  --popover-foreground: #f8f7f5;
+  --primary: #b48344;
+  --primary-foreground: #1a1a1a;
+  --secondary: #e6d5bf;
+  --secondary-foreground: #1a1a1a;
+  --muted: #204937;
+  --muted-foreground: #c8c8c8;
+  --accent: #2f5e48;
+  --accent-foreground: #f8f7f5;
+  --destructive: #e74c3c;
+  --warning: #e67e22;
+  --border: #2f5e48;
+  --input: #2f5e48;
+  --ring: #b48344;
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -163,22 +159,28 @@
 /* 2) set font-sans from the font variable where next/font will inject it
    .set-root-font should be applied on the same element that holds next/font variables (we used body) */
 @layer utilities {
-  .set-root-font {
-    --font-sans: var(--font-mont); /* default wired to Montserrat variable */
-    --font-mono: var(--font-geist-mono);
+  .font-heading {
+    font-family: var(--font-heading);
   }
 
-  /* class switches: add this class to any container to switch fonts inside it */
-  .font-geist {
-    --font-sans: var(--font-geist-sans);
+  .section-shell {
+    @apply mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8;
   }
 
-  .font-mont {
-    --font-sans: var(--font-mont);
+  .brand-btn-primary {
+    @apply rounded-md bg-[#b48344] px-6 py-3 text-sm font-bold text-[#1A1A1A] transition hover:bg-[#996f38] hover:shadow-[0_4px_12px_rgba(212,175,55,0.3)];
   }
 
-  .font-mono {
-    --font-mono: var(--font-geist-mono);
+  .brand-btn-secondary {
+    @apply rounded-md bg-[#2e4531] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#223324] hover:shadow-[0_4px_12px_rgba(27,94,63,0.3)];
+  }
+
+  .brand-btn-outline {
+    @apply rounded-md border-2 border-[#2e4531] px-6 py-3 text-sm font-bold text-[#2e4531] transition hover:bg-[#2e4531] hover:text-white;
+  }
+
+  .brand-card {
+    @apply rounded-lg border border-[#E0E0E0] bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)];
   }
 }
 
@@ -314,4 +316,24 @@
 /* Make the content area grow so footer gets pushed down */
 .body {
   flex: 1; /* give your Body component this class or style */
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+
+p,
+span,
+label,
+button,
+input,
+select,
+textarea,
+a,
+li {
+  font-family: var(--font-sans);
 }
