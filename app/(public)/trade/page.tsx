@@ -15,11 +15,11 @@ export default function TradePage() {
           className="absolute inset-0 h-full w-full object-cover opacity-20 mix-blend-overlay border-none"
         />
         <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-12 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b48344]">Global Partnerships</p>
-          <h1 className="mt-4 font-heading text-5xl font-medium tracking-tight md:text-6xl lg:text-7xl">
+          <p className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-[#b48344]">Global Partnerships</p>
+          <h1 className="mt-4 font-heading text-4xl sm:text-5xl font-medium tracking-tight md:text-6xl lg:text-7xl">
             Gaea Gold Trade & Export
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg font-light leading-relaxed text-white/85">
+          <p className="mx-auto mt-6 max-w-2xl text-base md:text-lg font-light leading-relaxed text-white/85">
             Secure, reliable, and compliant sourcing of premium agricultural commodities from India.
             We specialize in large-scale shipments customized to your manufacturing, wholesale, or
             private-label requirements.
@@ -28,7 +28,7 @@ export default function TradePage() {
       </section>
 
       {/* Trade Value Proposition */}
-      <section className="relative z-20 mx-auto max-w-[1400px] px-6 lg:px-12 -mt-10 pb-20">
+      <section className="relative z-20 mx-auto max-w-[1400px] px-6 lg:px-12 -mt-6 md:-mt-10 pb-20">
         <div className="grid gap-6 md:grid-cols-3">
           {[
             { title: 'Global Compliance', desc: 'ISO, Organic, and destination-specific certifications available.', icon: Globe },

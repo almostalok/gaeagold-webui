@@ -13,15 +13,15 @@ export default function AboutPage() {
           className="absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-overlay"
         />
         <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b48344]">Bridging farms to the world</p>
-          <h1 className="mt-4 font-heading text-5xl font-medium tracking-tight md:text-6xl lg:text-7xl">About Gaea Gold</h1>
+          <p className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-[#b48344]">Bridging farms to the world</p>
+          <h1 className="mt-4 font-heading text-4xl sm:text-5xl font-medium tracking-tight md:text-6xl lg:text-7xl">About Gaea Gold</h1>
         </div>
       </section>
 
       {/* Story Section */}
-      <section className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24">
-        <div className="grid gap-16 lg:grid-cols-2 items-center">
-          <div className="relative h-[500px] w-full overflow-hidden rounded-xl border border-[#e8e6e1] bg-[#f2f1f0]">
+      <section className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 lg:py-24">
+        <div className="grid gap-12 lg:gap-16 lg:grid-cols-2 items-center">
+          <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden rounded-[2rem] border border-[#e8e6e1] bg-[#f2f1f0]">
              <Image
               src="/assets/farm2.jpg"
               alt="Our Story"
@@ -82,11 +82,11 @@ export default function AboutPage() {
       </section>
 
       {/* Certifications Section */}
-      <section className="mx-auto max-w-[1400px] px-6 lg:px-12 py-24">
+      <section className="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 lg:py-24">
         <h2 className="font-heading text-3xl font-medium text-[#102f23] text-center">Certifications & Partners</h2>
-        <div className="mt-12 flex flex-wrap justify-center gap-6">
+        <div className="mt-12 flex flex-wrap justify-center gap-4 sm:gap-6">
           {['Organic', 'ISO 9001', 'Fair Trade', 'Export Council'].map((item) => (
-            <div key={item} className="flex min-w-[200px] flex-col items-center justify-center rounded-xl border border-[#e8e6e1] bg-white p-8">
+            <div key={item} className="flex min-w-[140px] sm:min-w-[200px] flex-col items-center justify-center rounded-[2rem] border border-[#e8e6e1] bg-white p-6 sm:p-8">
               <div className="h-12 w-12 rounded-full border border-[#e8e6e1] bg-[#f2f1f0]" />
               <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-[#102f23]">{item}</p>
             </div>

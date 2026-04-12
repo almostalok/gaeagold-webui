@@ -6,8 +6,8 @@ export default function ContactPage() {
       <section className="relative bg-[#102f23] pt-32 pb-32 text-center text-white overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,#102f23_100%)] z-10" />
         <div className="relative z-20 mx-auto max-w-[1400px] px-6 lg:px-12 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b48344]">We&apos;re here to help</p>
-          <h1 className="mt-4 font-heading text-5xl font-medium md:text-6xl text-white">Get in Touch</h1>
+          <p className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.2em] text-[#b48344]">We&apos;re here to help</p>
+          <h1 className="mt-4 font-heading text-4xl sm:text-5xl font-medium md:text-6xl text-white">Get in Touch</h1>
         </div>
       </section>
 
@@ -45,7 +45,7 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-[#e8e6e1] bg-white p-8 lg:p-12 shadow-sm">
+          <div className="rounded-[2rem] border border-[#e8e6e1] bg-white p-6 sm:p-8 lg:p-12 shadow-sm">
             <h2 className="font-heading text-3xl font-medium text-[#102f23]">Send us a Message</h2>
             
             <form className="mt-8 grid gap-6 md:grid-cols-2">
