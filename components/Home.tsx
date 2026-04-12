@@ -1,204 +1,68 @@
-import { ArrowRight, Flame, Heart, Leaf, ShieldCheck, Wheat } from 'lucide-react';
-import Link from 'next/link';
-import BannerCarousel from './BannerCarousel';
+import React from 'react';
 import HeroSection from './HeroSection';
-import BrandStory from './BrandStory';
 import CategoryShowcase from './CategoryShowcase';
-import FeaturedProducts from './FeaturedProducts';
-import TrustCTA from './TrustCTA';
-import { id } from 'date-fns/locale';
+import BrandStory from './BrandStory';
+import { categories, products } from '@/lib/site-data';
+import Image from 'next/image';
+import { BadgeCheck, CircleCheckBig, Sprout } from 'lucide-react';
 
 export default function Home() {
-  const categories = [
-    {
-      id: '1',
-      name: 'Powders',
-      slug: 'powders',
-      description: 'Dehydrated culinary powders for cooking, seasoning, and food processing.',
-    },
-    {
-      id: '2',
-      name: 'Spices',
-      slug: 'spices',
-      description: 'Freshly sourced whole spices and fine-ground spice powders.',
-    },
-    {
-      name: '3',
-      slug: 'rice',
-      description: 'Premium rice varieties selected for aroma, texture, and consistency.',
-    },
-    {
-      id: '4',
-      name: 'Wheat & Flour',
-      slug: 'wheat-flour',
-      description: 'Farm-grade wheat grains and stone-milled flour for everyday kitchens.',
-    },
-    {
-      id: '5',
-      name: 'Ghee',
-      slug: 'ghee',
-      description: 'Traditional clarified butter made from pure milk for cooking and wellness.',
-    },
-  ];
-
-  const products = [
-    {
-      name: 'Onion Powder',
-      slug: 'onion-powder',
-      shortDesc: 'Fine onion powder with strong aroma for gravies and seasoning blends.',
-      description:
-        'A smooth, shelf-stable onion powder crafted for sauces, soups, marinades, and ready-to-cook mixes. Ideal for both home kitchens and bulk buyers.',
-      image: '/products/onion-powder.png',
-      price: 180,
-      stock: 120,
-      unit: '500 g',
-      featured: true,
-      categorySlug: 'powders',
-    },
-    {
-      name: 'Ginger Powder',
-      slug: 'ginger-powder',
-      shortDesc: 'Warm, pungent ginger powder for beverages, bakery, and spice mixes.',
-      description:
-        'Dry ginger powder with a balanced spicy profile, suitable for masala blends, herbal drinks, snacks, and processed food applications.',
-      image: '/products/ginger-powder.png',
-      price: 220,
-      stock: 95,
-      unit: '500 g',
-      featured: true,
-      categorySlug: 'powders',
-    },
-    {
-      name: 'Garlic Powder',
-      slug: 'garlic-powder',
-      shortDesc: 'Rich garlic powder for seasoning, sauces, snacks, and marinades.',
-      description:
-        'Made for instant flavor without the prep time of fresh garlic. Works well in namkeen, snack seasoning, chutneys, and ready-to-eat preparations.',
-      image: '/products/garlic-powder.png',
-      price: 210,
-      stock: 100,
-      unit: '500 g',
-      featured: true,
-      categorySlug: 'powders',
-    },
-    {
-      name: 'Whole Black Pepper',
-      slug: 'whole-black-pepper',
-      shortDesc: 'Bold whole black pepper with sharp heat and strong natural oils.',
-      description:
-        'Premium whole black pepper sourced for robust flavor and consistent size. Best for grinding fresh, spice blends, and culinary use.',
-      image: '/products/whole-black-pepper.png',
-      price: 320,
-      stock: 80,
-      unit: '500 g',
-      featured: true,
-      categorySlug: 'spices',
-    },
-    {
-      name: 'Black Pepper Powder',
-      slug: 'black-pepper-powder',
-      shortDesc: 'Fresh-ground black pepper powder with deep aroma and balanced pungency.',
-      description:
-        'Convenient black pepper powder for table seasoning, sauces, ready meals, and food service use where uniform texture matters.',
-      image: '/products/black-pepper-powder.png',
-      price: 340,
-      stock: 70,
-      unit: '500 g',
-      featured: false,
-      categorySlug: 'spices',
-    },
-    {
-      name: 'Premium Basmati Rice',
-      slug: 'premium-basmati-rice',
-      shortDesc: 'Long-grain aromatic basmati rice for biryani, pulao, and premium dining.',
-      description:
-        'Carefully selected basmati rice with long grains, natural aroma, and fluffy cooked texture. A strong fit for households, horeca, and resellers.',
-      image: '/products/basmati-rice.png',
-      price: 540,
-      stock: 150,
-      unit: '5 kg',
-      featured: true,
-      categorySlug: 'rice',
-    },
-    {
-      name: 'Premium Sharbati Wheat',
-      slug: 'premium-sharbati-wheat',
-      shortDesc: 'Golden sharbati wheat grains with soft texture and natural sweetness.',
-      description:
-        'High-quality sharbati wheat suited for daily chapati consumption and premium grain supply. Known for softness and reliable dough performance.',
-      image: '/products/sharbati-wheat.png',
-      price: 320,
-      stock: 140,
-      unit: '5 kg',
-      featured: false,
-      categorySlug: 'wheat-flour',
-    },
-    {
-      name: 'Sharbati Wheat Flour',
-      slug: 'sharbati-wheat-flour',
-      shortDesc: 'Stone-milled flour made from premium sharbati wheat for soft rotis.',
-      description:
-        'Freshly milled wheat flour with fine texture and strong water absorption, designed for soft rotis, parathas, and consistent daily use.',
-      image: '/products/sharbati-wheat-flour.png',
-      price: 360,
-      stock: 110,
-      unit: '5 kg',
-      featured: true,
-      categorySlug: 'wheat-flour',
-    },
-    {
-      name: 'Desi Cow Ghee',
-      slug: 'desi-cow-ghee',
-      shortDesc: 'Pure desi cow ghee with rich aroma, made using traditional bilona method.',
-      description:
-        'Handcrafted desi cow ghee prepared from A2 milk using the traditional bilona process. Rich in flavour and nutrients, ideal for cooking, tadka, sweets, and daily consumption.',
-      image: '/products/desi-cow-ghee.png',
-      price: 750,
-      stock: 60,
-      unit: '1 L',
-      featured: true,
-      categorySlug: 'ghee',
-    },
-    {
-      name: 'Buffalo Ghee',
-      slug: 'buffalo-ghee',
-      shortDesc: 'Creamy buffalo ghee with dense texture, perfect for sweets and parathas.',
-      description:
-        'Premium buffalo ghee with a thick, grainy texture and deep golden colour. Excellent for halwa, laddoo, parathas, and rich gravies. High fat content delivers superior taste.',
-      image: '/products/buffalo-ghee.png',
-      price: 620,
-      stock: 75,
-      unit: '1 L',
-      featured: true,
-      categorySlug: 'ghee',
-    },
-  ];
-
   return (
-    <div>
-      {/* landscape image carousel and brand banners */}
-      <section className="banner-section ">
-        <BannerCarousel />
-      </section>
-      {/* Section 1 — Hero */}
-      <section className="hero-section relative overflow-hidden bg-gradient-to-br from-[#f3ece0] via-[#faf6ef] to-[#e8dfd0]">
-        <HeroSection />
-      </section>
+    <div className="bg-[#f9f6f0] text-[#1a1a1a]">
+      <HeroSection />
+      
+      <CategoryShowcase categories={categories} products={products} />
+      
+      <BrandStory />
 
-      {/* Section 2 — Brand Story */}
-      <section className="brand-story bg-[#faf6ef] py-20 sm:py-24">
-        <BrandStory />
-      </section>
-
-      {/* Section 3 — Category Showcase */}
-      <section className="category-showcase bg-[#f3ece0] pb-20 sm:pb-24">
-        <CategoryShowcase categories={categories} products={products} />
-      </section>
-
-      {/* Section 5 — Trust / CTA */}
-      <section className="bg-gradient-to-br from-[#4a6741] to-[#3d5636] py-20 sm:py-24">
-        <TrustCTA />
+      {/* Newsletter Section */}
+      <section className="bg-[#f2f1f0] py-24 relative overflow-hidden border-t border-[#e8e6e1]">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-12 relative z-10 grid gap-12 lg:grid-cols-2 items-center">
+          <div className="max-w-xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b48344]">
+              Join The Family
+            </p>
+            <h2 className="mt-4 font-heading text-4xl lg:text-5xl font-medium text-[#102f23]">
+              Subscribe to purity.
+            </h2>
+            <p className="mt-6 text-lg font-light leading-relaxed text-[#6b6b6b]">
+              Get updates on seasonal harvests, limited edition drops, and exclusive offers. 
+              We bring the finest traditions straight to your inbox.
+            </p>
+          </div>
+          <div className="rounded-xl border border-[#e8e6e1] bg-white p-8 lg:p-10 shadow-sm relative overflow-hidden">
+             {/* Subtle decorative accent */}
+             <div className="absolute top-0 right-0 w-32 h-32 bg-[#b48344]/5 rounded-bl-[100px]" />
+             
+             <div className="relative z-10">
+              <label htmlFor="newsletter" className="text-sm font-semibold uppercase tracking-widest text-[#102f23]">
+                Email Address
+              </label>
+              <div className="mt-4 flex flex-col sm:flex-row gap-4">
+                <input
+                  id="newsletter"
+                  type="email"
+                  placeholder="Enter your email"
+                  className="flex-1 rounded-none border-b border-[#e8e6e1] bg-transparent pb-3 text-base text-[#1a1a1a] outline-none placeholder:text-[#a0a0a0] focus:border-[#b48344] transition-colors"
+                />
+                <button type="button" className="inline-flex items-center justify-center gap-2 rounded bg-[#102f23] px-8 py-3 text-xs font-bold uppercase tracking-[0.15em] text-white transition-colors hover:bg-[#b48344]">
+                  Subscribe
+                  <CircleCheckBig className="h-4 w-4" />
+                </button>
+              </div>
+              <div className="mt-8 flex flex-wrap gap-4 text-xs font-semibold uppercase tracking-wider text-[#6b6b6b]">
+                <span className="inline-flex items-center gap-1.5 border border-[#e8e6e1] rounded px-3 py-1">
+                  <BadgeCheck className="h-3.5 w-3.5 text-[#b48344]" /> No spam
+                </span>
+                <span className="inline-flex items-center gap-1.5 border border-[#e8e6e1] rounded px-3 py-1">
+                  <Sprout className="h-3.5 w-3.5 text-[#b48344]" /> Meaningful updates
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );
 }
+
