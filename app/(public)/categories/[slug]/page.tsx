@@ -1,0 +1,314 @@
+'use client';
+
+import * as React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
+import { categories, Product, products } from '@/lib/site-data';
+
+// Fake Certifications array
+const certifications = ['Organic Certified', 'ISO 9001:2015', 'Fair Trade', 'FDA Approved', 'A2 Certified'];
+
+export default function CategoryPage({ params }: { params: { slug: string } }) {
+  // Use React.use() to unwrap params if needed in newer Next, 
+  // but since we are copying pattern, we'll assume synchronous access or typical use
+  const { slug } = React.use(params as any) as any;
+  
+  const category = categories.find((c) => c.slug === slug);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = React.useState(false);
+
+  if (!category) {
+    notFound();
+  }
+
+  const categoryProducts = products.filter(p => p.category === category.name);
+
+  return (
+    <main className="min-h-screen bg-[#f9f6f0] text-[#1a1a1a]">
+      {/* Grand Hero Section with Farm Elements behind Transparent Navbar */}
+      <section className="relative w-full overflow-hidden bg-[#102f23] pb-24 pt-32 lg:pt-40 px-6 lg:px-12 -mt-[1px]">
+        {/* Atmospheric Rural farm landscape pattern */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-[0.25] mix-blend-luminosity" 
+          style={{ backgroundImage: 'url(/images/rural_pattern.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} />
+        
+        <div className="relative z-10 mx-auto max-w-[1400px] text-center flex flex-col items-center">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-7xl font-medium text-[#f9f6f0] mb-4">{category.name}</h1>
+          <p className="max-w-2xl text-[#f9f6f0]/80 text-sm md:text-base font-medium mb-8 leading-relaxed">
+            {category.description}
+          </p>
+          <nav className="text-[10px] md:text-xs font-semibold uppercase tracking-widest text-[#f9f6f0]/60">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link> 
+            <span className="px-2 text-[#b48344]">/</span> 
+            <Link href="/products" className="hover:text-white transition-colors">Products</Link> 
+            <span className="px-2 text-[#b48344]">/</span> 
+            <span className="text-[#f9f6f0]">{category.name}</span>
+          </nav>
+        </div>
+      </section>
+
+      {/* Main Content Area */}
+      <section className="relative mx-auto w-full max-w-[1400px] px-6 lg:px-12 py-12 lg:py-24">
+        {/* Minimalistic Cream Background farm overlay */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-multiply" 
+             style={{ backgroundImage: 'url(/images/cream_pattern.png)', backgroundSize: '450px', backgroundPosition: 'center', backgroundRepeat: 'repeat' }} />
+
+        {/* Mobile Toolbar (Filter Toggle & Shows Sort on Mobile) */}
+        <div className="relative z-10 mb-8 flex flex-col gap-4 sm:flex-row sm:items-center justify-between border-b border-[#e8e6e1] pb-6 lg:hidden">
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6b6b6b]">Showing {categoryProducts.length} Products</p>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button 
+              onClick={() => setIsMobileFilterOpen(true)}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-2 border border-[#e8e6e1] bg-white px-5 py-3 rounded-full text-[10px] font-bold text-[#102f23] uppercase tracking-widest"
+            >
+              <SlidersHorizontal className="h-4 w-4" /> Filters
+            </button>
+            <div className="flex-1 sm:flex-none z-50">
+              <SortDropdown />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Filter Modal overlay */}
+        {isMobileFilterOpen && (
+          <div className="fixed inset-0 z-[200] flex lg:hidden">
+             {/* Backdrop */}
+             <div className="fixed inset-0 bg-[#102f23]/80 backdrop-blur-sm" onClick={() => setIsMobileFilterOpen(false)} />
+             
+             {/* Drawer */}
+             <div className="relative w-[300px] max-w-[80vw] h-full bg-[#f9f6f0] p-6 overflow-y-auto z-[210] shadow-2xl flex flex-col">
+                <div className="flex items-center justify-between mb-8 border-b border-[#e8e6e1] pb-4">
+                   <h2 className="font-heading text-xl font-medium text-[#102f23]">Filters</h2>
+                   <button onClick={() => setIsMobileFilterOpen(false)} className="p-2 bg-white rounded-full border border-[#e8e6e1]">
+                      <X className="w-5 h-5 text-[#102f23]" />
+                   </button>
+                </div>
+                <FilterContent currentCategorySlug={slug} />
+                <div className="mt-auto pt-8">
+                  <button onClick={() => setIsMobileFilterOpen(false)} className="w-full bg-[#102f23] py-4 text-xs font-bold uppercase tracking-widest text-white shadow-md rounded-xl">
+                    Show Products
+                  </button>
+                </div>
+             </div>
+          </div>
+        )}
+
+        <div className="relative z-10 grid gap-12 lg:grid-cols-[250px_1fr]">
+          {/* Desktop Filters Sidebar */}
+          <aside className="sticky top-[100px] hidden h-fit max-h-[calc(100vh-140px)] overflow-y-auto lg:block pr-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <h2 className="mb-6 font-heading text-xl lg:text-lg font-medium text-[#102f23]">Filters</h2>
+            <FilterContent currentCategorySlug={slug} />
+          </aside>
+
+          {/* Products Grid Area */}
+          <div>
+            <div className="mb-8 hidden items-center justify-between border-b border-[#e8e6e1] pb-6 lg:flex relative z-50">
+              <p className="text-xs font-semibold tracking-widest uppercase text-[#6b6b6b]">Showing {categoryProducts.length} Products</p>
+              <SortDropdown />
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {categoryProducts.length > 0 ? (
+                categoryProducts.map((item) => (
+                  <GridProductCard key={item.id} product={item} />
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center text-[#6b6b6b]">
+                  <p>No products found in this category.</p>
+                </div>
+              )}
+            </div>
+            
+            {categoryProducts.length > 0 && (
+              <div className="mt-16 flex flex-wrap justify-center gap-2 border-t border-[#e8e6e1] pt-12">
+                {['Prev', '1', 'Next'].map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={`border px-5 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all shadow-sm ${
+                      item === '1'
+                        ? 'border-[#b48344] bg-[#b48344] text-white'
+                        : 'border-[#e8e6e1] bg-white text-[#6b6b6b] hover:border-[#102f23] hover:text-[#102f23]'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function FilterContent({ currentCategorySlug }: { currentCategorySlug: string }) {
+  return (
+    <>
+      <div className="border-t border-[#e8e6e1] py-6 -mt-6 lg:mt-0">
+        <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#102f23]">Category</h3>
+        <ul className="space-y-3">
+          {categories.map((item) => (
+            <li key={item.slug} className="flex items-center justify-between text-base">
+              <Link href={`/categories/${item.slug}`} className={`flex items-center gap-3 cursor-pointer transition-colors group ${currentCategorySlug === item.slug ? 'text-[#b48344]' : 'text-[#6b6b6b] hover:text-[#102f23]'}`}>
+                <div className={`h-4 w-4 border rounded-sm flex items-center justify-center transition-colors ${currentCategorySlug === item.slug ? 'bg-[#b48344] border-[#b48344]' : 'border-[#e8e6e1] group-hover:border-[#b48344]'}`}>
+                  {currentCategorySlug === item.slug && <svg viewBox="0 0 14 14" fill="none" className="w-3 h-3 text-white"><path d="M3 7.5L5.5 10L11 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                </div>
+                <span className="transition-colors">{item.name}</span>
+              </Link>
+              <span className="text-[10px] font-semibold text-[#a0a0a0]">({item.count})</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="border-t border-[#e8e6e1] py-6">
+        <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#102f23]">Price Range</h3>
+        <input type="range" min={0} max={10000} className="w-full accent-[#b48344]" />
+        <p className="mt-4 text-xs font-semibold text-[#6b6b6b]">₹0 - ₹10,000</p>
+      </div>
+
+      <div className="border-t border-[#e8e6e1] py-6">
+        <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#102f23]">Certifications</h3>
+        <ul className="space-y-3">
+          {certifications.map((item) => (
+            <li key={item} className="text-base text-[#6b6b6b]">
+              <label className="flex items-center gap-3 hover:text-[#102f23] cursor-pointer transition-colors group text-[#6b6b6b]">
+                <input type="checkbox" className="h-4 w-4 accent-[#b48344]" />
+                <span className="group-hover:text-[#b48344] transition-colors">{item}</span>
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="pt-6">
+        <button type="button" className="w-full bg-[#102f23] px-6 py-4 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-[#b48344] shadow-md rounded-xl">
+          Apply Filters
+        </button>
+        <button type="button" className="mt-4 w-full text-[10px] font-bold uppercase tracking-widest text-[#6b6b6b] hover:text-[#102f23] transition-colors">
+          Clear All
+        </button>
+      </div>
+    </>
+  )
+}
+
+function SortDropdown() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState('Filter by: Popular');
+  const options = ['Filter by: Popular', 'Filter by: Newest', 'Price: Low to High', 'Price: High to Low'];
+
+  return (
+    <div className="relative w-full sm:w-[220px]">
+      <button 
+        type="button" 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between border border-[#e8e6e1] bg-white px-5 py-3 rounded-full text-[10px] font-bold text-[#102f23] transition-colors hover:border-[#b48344] shadow-sm uppercase tracking-widest"
+      >
+        <span>{selected}</span>
+        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#b48344]' : ''}`} />
+      </button>
+      
+      {isOpen && (
+        <div className="absolute left-0 right-0 top-full mt-2 bg-white border border-[#e8e6e1] rounded-2xl shadow-xl overflow-hidden z-[100]">
+          {options.map((option, idx) => (
+            <button
+              key={idx}
+              onClick={() => { setSelected(option); setIsOpen(false); }}
+              className={`w-full text-left px-5 py-3.5 text-[9px] sm:text-[10px] uppercase font-bold tracking-widest border-b border-[#e8e6e1] last:border-0 hover:bg-[#f9f6f0] transition-colors flex justify-between items-center ${option === selected ? 'text-[#b48344] bg-[#f9f6f0]' : 'text-[#6b6b6b]'}`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GridProductCard({ product }: { product: Product }) {
+  const hasVariants = product.variants && product.variants.length > 0;
+  const [selectedVariantIdx, setSelectedVariantIdx] = React.useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  
+  const currentPrice = hasVariants ? product.variants![selectedVariantIdx].price : product.price;
+  const currentWeight = hasVariants ? product.variants![selectedVariantIdx].weight : product.weight;
+
+  return (
+    <div className="group h-full flex flex-col bg-white border border-[#e8e6e1] transition-all duration-500 hover:border-[#b48344] rounded-[2rem] overflow-visible hover:shadow-[0_10px_40px_rgba(0,0,0,0.06)] shadow-sm">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-t-[2rem] bg-[#f9f6f0] p-6 flex flex-col items-center justify-center">
+        <Link href={`/products/${product.slug}`} className="absolute inset-0 z-20" />
+        <Image 
+          src={product.image} 
+          alt={product.name} 
+          fill 
+          className="object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110" 
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        {product.badge && (
+          <span className="absolute top-4 left-4 z-30 bg-white px-3 py-1 text-[9px] uppercase tracking-widest font-bold text-[#b48344] border border-[#e8e6e1] rounded-full shadow-sm pointer-events-none">
+            {product.badge}
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-col flex-1 p-6 pb-8 text-center bg-white border-t border-[#e8e6e1] z-30 relative rounded-b-[2rem]">
+        <h3 className="font-heading text-base sm:text-lg font-medium text-[#102f23] mb-2 leading-tight">
+          <Link href={`/products/${product.slug}`} className="hover:text-[#b48344] transition-colors">{product.name}</Link>
+        </h3>
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-widest text-[#102f23]/50 font-semibold mb-6 flex-1">
+          <Link href={`/categories/${categories.find(c => c.name === product.category)?.slug}`} className="hover:text-[#b48344] transition-colors">{product.category}</Link>
+        </p>
+        
+        <div className="mb-4 flex flex-col items-center border-t border-[#e8e6e1] pt-4">
+           <span className="text-lg sm:text-xl font-medium text-[#102f23]">₹{currentPrice}</span>
+        </div>
+        
+        {hasVariants ? (
+          <div className="relative w-full mb-4">
+             <button 
+                type="button" 
+                onClick={(e) => { e.preventDefault(); setIsDropdownOpen(!isDropdownOpen); }}
+                className="w-full flex items-center justify-between border border-[#e8e6e1] bg-[#f9f6f0] px-4 py-2.5 rounded-full text-[10px] sm:text-xs font-bold text-[#102f23] transition-colors hover:border-[#b48344]"
+             >
+                <span>{currentWeight}</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+             </button>
+             
+             {isDropdownOpen && (
+                <div className="absolute left-0 right-0 bottom-full mb-2 bg-white border border-[#e8e6e1] rounded-2xl shadow-xl overflow-hidden z-[100]">
+                   {product.variants!.map((variant, idx) => (
+                      <button
+                         key={idx}
+                         onClick={(e) => { e.preventDefault(); setSelectedVariantIdx(idx); setIsDropdownOpen(false); }}
+                         className={`w-full text-left px-5 py-3 text-[10px] sm:text-xs font-bold border-b border-[#e8e6e1] last:border-0 hover:bg-[#f9f6f0] transition-colors flex justify-between items-center ${idx === selectedVariantIdx ? 'text-[#b48344] bg-[#f9f6f0]' : 'text-[#102f23]'}`}
+                      >
+                         <span>{variant.weight}</span>
+                         <span className="text-[#102f23]/60 font-semibold">₹{variant.price}</span>
+                      </button>
+                   ))}
+                </div>
+             )}
+          </div>
+        ) : (
+          <div className="mb-4">
+             <span className="inline-block px-4 py-2.5 text-[10px] sm:text-xs font-bold text-[#102f23]/60 uppercase tracking-widest w-full text-center">{currentWeight}</span>
+          </div>
+        )}
+        
+        <div className="flex w-full items-center justify-between border border-[#e8e6e1] group-hover:border-[#b48344] rounded-full overflow-hidden transition-all duration-300">
+           <div className="flex items-center px-3 sm:px-4 bg-[#f9f6f0] border-r border-[#e8e6e1] group-hover:border-[#b48344] transition-colors z-30">
+              <span className="text-sm font-bold text-[#102f23]/40 cursor-pointer hover:text-[#b48344] py-2">-</span>
+              <span className="text-sm font-bold text-[#102f23] px-2 sm:px-3">1</span>
+              <span className="text-sm font-bold text-[#102f23]/40 cursor-pointer hover:text-[#b48344] py-2">+</span>
+           </div>
+           <button className="flex-1 flex items-center justify-center gap-2 bg-transparent px-2 sm:px-4 py-3 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-[#102f23] group-hover:bg-[#b48344] group-hover:text-white transition-all z-30">
+             Add
+           </button>
+        </div>
+      </div>
+    </div>
+  );
+}
