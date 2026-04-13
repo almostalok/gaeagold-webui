@@ -41,7 +41,7 @@ export default function LoginPage(): React.ReactNode {
             <p className="mt-3 text-sm text-[#615843]">Welcome back. Please enter your credentials.</p>
           </div>
 
-          <form className="space-y-5">
+          <div className="space-y-5">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-[#7A6C4A]">
                 Email Address
@@ -77,7 +77,7 @@ export default function LoginPage(): React.ReactNode {
             <Link href="/admin" className="mt-8 flex w-full justify-center rounded-full bg-[#2e4531] py-3.5 text-sm font-bold tracking-wide text-white transition hover:bg-[#1f3022] shadow-[0_8px_20px_rgba(46,69,49,0.2)]">
               Sign In to Portal
             </Link>
-          </form>
+          </div>
           
           <div className="mt-8 pt-8 border-t border-[#e8dfc8]/60 text-center">
                         <Link href="/" className="text-xs font-semibold text-[#615843] flex items-center justify-center gap-2 hover:text-[#2e4531] transition">
