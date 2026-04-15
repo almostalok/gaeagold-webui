@@ -29,11 +29,19 @@ export function Header(): React.ReactNode {
   }, []);
 
   const popularProducts = products.slice(0, 4);
+  const isHomePage = pathname === '/';
+  
+  // If we are not on the home page, the header should be solid green from the start.
+  // On home page, it starts transparent and becomes solid slightly thinner when scrolled.
+  const isSolidGreen = !isHomePage || scrolled;
+  
+  const textColorClass = 'text-white';
+  const logoTextClass = 'text-white';
 
   return (
     <>
       <header className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled 
+        isSolidGreen 
           ? 'bg-[#102f23] border-b border-white/10 shadow-sm py-4' 
           : 'bg-transparent py-6'
       }`}>
@@ -52,7 +60,7 @@ export function Header(): React.ReactNode {
                 priority 
               />
               <div className="hidden sm:flex flex-col justify-center">
-                 <span className="font-heading text-xl font-medium leading-none tracking-wide text-white">
+                 <span className={`font-heading text-xl font-bold leading-none tracking-wide transition-colors duration-300 ${logoTextClass}`}>
                    GAEA GOLD
                  </span>
               </div>
@@ -67,8 +75,8 @@ export function Header(): React.ReactNode {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`text-[12px] tracking-widest font-semibold uppercase transition-colors duration-300 ${
-                    isActive ? 'text-[#b48344]' : 'text-white hover:text-[#b48344]'
+                  className={`text-[12px] tracking-widest font-bold uppercase transition-colors duration-300 ${
+                    isActive ? 'text-[#b48344]' : `${textColorClass} hover:text-[#b48344]`
                   }`}
                 >
                   {item.label}
@@ -81,7 +89,7 @@ export function Header(): React.ReactNode {
           <div className="flex w-1/3 items-center justify-end gap-5">
             <button
                type="button"
-               className="text-white hover:text-[#b48344] transition-colors"
+               className={`${textColorClass} hover:text-[#b48344] transition-colors`}
                onClick={() => setSearchOpen(true)}
                aria-label="Search"
             >
@@ -89,7 +97,7 @@ export function Header(): React.ReactNode {
             </button>
             <button
                type="button"
-               className="relative text-white hover:text-[#b48344] transition-colors"
+               className={`relative ${textColorClass} hover:text-[#b48344] transition-colors`}
                onClick={() => setCartOpen(true)}
                aria-label="Cart"
             >
@@ -102,7 +110,7 @@ export function Header(): React.ReactNode {
             <button
                type="button"
                onClick={() => setMenuOpen(!menuOpen)}
-               className="text-white hover:text-[#b48344] transition-colors md:hidden ml-2"
+               className={`${textColorClass} hover:text-[#b48344] transition-colors md:hidden ml-2`}
                aria-label="Menu"
             >
                <Menu className="h-6 w-6 stroke-[1.5]" />
@@ -197,8 +205,8 @@ export function Header(): React.ReactNode {
                     </div>
                     <p className="text-2xl font-medium text-[#102f23]">₹2,355</p>
                  </div>
-                 <Link href="/products" className="flex w-full items-center justify-center bg-[#102f23] text-white py-4 px-6 text-[13px] font-bold uppercase tracking-widest hover:bg-[#b48344] transition-colors">
-                    Proceed to Checkout
+                 <Link href="/cart" onClick={() => setCartOpen(false)} className="flex w-full items-center justify-center bg-[#102f23] text-white py-4 px-6 text-[13px] font-bold uppercase tracking-widest hover:bg-[#b48344] transition-colors">
+                    View Cart & Checkout
                  </Link>
               </div>
            </aside>
@@ -228,6 +236,9 @@ export function Header(): React.ReactNode {
               ))}
               
               <div className="mt-12 pt-8 border-t border-[#e8e6e1] flex flex-col gap-6">
+                 <Link href="/login" onClick={closeMenu} className="text-[15px] font-bold uppercase tracking-widest text-[#102f23] hover:text-[#b48344]">
+                   Login / Register
+                 </Link>
                  <Link href="/contact" onClick={closeMenu} className="text-[13px] font-bold uppercase tracking-widest text-[#102f23]/60 hover:text-[#102f23]">
                    Contact Us
                  </Link>
