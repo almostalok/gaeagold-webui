@@ -145,20 +145,15 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html,
-  body {
+  body, html {
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4l16 5.333L12 12l-2.667 8L4 4z" fill="%23b48344" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>') 4 4, auto !important;
   }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  * {
-    cursor: none !important;
+  
+  a, button, [role="button"], input, select, textarea, .hover-trigger, .cursor-pointer {
+    cursor: pointer !important;
   }
 }
 
