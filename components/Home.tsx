@@ -2,10 +2,11 @@
 
 import React from 'react';
 import HeroSection from './HeroSection';
-import CategoryShowcase from './CategoryShowcase';
+import FeaturedProducts from './FeaturedProducts';
+import Testimonials from './Testimonials';
 import BrandStory from './BrandStory';
 import Marquee from './Marquee';
-import { categories, products } from '@/lib/site-data';
+import { products } from '@/lib/site-data';
 import Image from 'next/image';
 import { BadgeCheck, CircleCheckBig, Sprout } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -17,7 +18,9 @@ export default function Home() {
       
       <Marquee />
 
-      <CategoryShowcase categories={categories} products={products} />
+      <FeaturedProducts products={products} />
+      
+      <Testimonials />
       
       <BrandStory />
 
