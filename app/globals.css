@@ -156,6 +156,12 @@
   }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
 /* 2) set font-sans from the font variable where next/font will inject it
    .set-root-font should be applied on the same element that holds next/font variables (we used body) */
 @layer utilities {

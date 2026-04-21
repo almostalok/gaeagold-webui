@@ -3,6 +3,7 @@ import Providers from './providers/Providers';
 import { Toaster } from 'sonner';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import CustomCursor from '@/components/CustomCursor';
 
 const inter = Inter({
   variable: '--font-sans',
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${monoFont.variable} antialiased theme-transition global-container`}
       >
+        <CustomCursor />
         <Providers>
           {children}
           <Toaster
