@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingCart, Menu, X, ChevronRight } from 'lucide-react';
+import { Search, ShoppingCart, Menu, X, ChevronRight, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { navItems, products } from '@/lib/site-data';
@@ -106,6 +106,13 @@ export function Header(): React.ReactNode {
                  3
                </span>
             </button>
+            <Link
+               href="/profile"
+               className={`${textColorClass} hover:text-[#b48344] transition-colors`}
+               aria-label="Profile"
+            >
+               <User className="h-5 w-5 stroke-[1.5]" />
+            </Link>
             
             <button
                type="button"
