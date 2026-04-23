@@ -3,6 +3,7 @@ import Providers from './providers/Providers';
 import { Toaster } from 'sonner';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import Preloader from '@/components/Preloader';
 
 const inter = Inter({
   variable: '--font-sans',
@@ -32,6 +33,7 @@ export default function RootLayout({
         className={`${inter.variable} ${monoFont.variable} antialiased theme-transition global-container`}
       >
         <Providers>
+          <Preloader />
           {children}
           <Toaster
             position="top-right"

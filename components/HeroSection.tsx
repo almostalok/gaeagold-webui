@@ -2,9 +2,11 @@
 
 import { ArrowRight, Leaf, ShieldCheck, Sun } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import TextReveal from './TextReveal';
+import Magnetic from './Magnetic';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -27,13 +29,23 @@ const itemVariants = {
 };
 
 export default function HeroSection() {
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacityBackground = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
+
   return (
-    <section className="relative w-full min-h-[100dvh] flex flex-col justify-center overflow-hidden bg-[#102f23]">
+    <section ref={containerRef} className="relative w-full min-h-[100dvh] flex flex-col justify-center overflow-hidden bg-[#102f23]">
       {/* Immersive Background */}
       <motion.div 
         initial={{ opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
+        style={{ y: yBackground, opacity: opacityBackground }}
         className="absolute inset-0 z-0"
       >
         <Image
@@ -66,9 +78,9 @@ export default function HeroSection() {
         </motion.div>
         
         {/* Typography */}
-        <motion.h1 variants={itemVariants} className="text-center font-heading text-5xl sm:text-6xl md:text-7xl lg:text-[7rem] font-medium leading-[1.05] tracking-tight text-white mb-8 filter drop-shadow-sm">
-          From Indian farms <br className="hidden sm:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e6d5bf] to-[#b48344]">to your heritage</span>
+        <motion.h1 variants={itemVariants} className="text-center font-heading text-5xl sm:text-6xl md:text-7xl lg:text-[7rem] font-medium leading-[1.05] tracking-tight text-white mb-8 filter drop-shadow-sm flex flex-col items-center">
+          <TextReveal text="From Indian farms" />
+          <TextReveal text="to your heritage" className="text-transparent bg-clip-text bg-gradient-to-r from-[#e6d5bf] to-[#b48344]" />
         </motion.h1>
         
         <motion.p variants={itemVariants} className="mx-auto max-w-2xl text-center text-base md:text-lg font-light leading-relaxed text-white/80 mb-14 px-4 hover-trigger">
@@ -77,19 +89,23 @@ export default function HeroSection() {
         
         {/* Action Buttons with soft radii */}
         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-xs sm:max-w-none justify-center items-center">
-          <Link
-            href="/products"
-            className="group flex w-full sm:w-auto items-center justify-center gap-3 bg-white text-[#102f23] px-8 py-4 rounded-full text-[13px] font-semibold shadow-[0_8px_30px_rgba(255,255,255,0.15)] transition-all duration-300 hover:shadow-[0_8px_40px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 hover-trigger"
-          >
-            <span>Explore Collection</span>
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-          <Link
-            href="/about"
-            className="flex w-full sm:w-auto items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 px-8 py-4 rounded-full text-[13px] font-semibold text-white transition-all duration-300 hover:bg-white/20 hover-trigger"
-          >
-             Our Story
-          </Link>
+          <Magnetic>
+            <Link
+              href="/products"
+              className="group flex w-full sm:w-auto items-center justify-center gap-3 bg-white text-[#102f23] px-8 py-4 rounded-full text-[13px] font-semibold shadow-[0_8px_30px_rgba(255,255,255,0.15)] transition-all duration-300 hover:shadow-[0_8px_40px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 hover-trigger"
+            >
+              <span>Explore Collection</span>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Magnetic>
+          <Magnetic>
+            <Link
+              href="/about"
+              className="flex w-full sm:w-auto items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 px-8 py-4 rounded-full text-[13px] font-semibold text-white transition-all duration-300 hover:bg-white/20 hover-trigger"
+            >
+               Our Story
+            </Link>
+          </Magnetic>
         </motion.div>
 
         {/* Floating Glass Features Bar (fixes mobile layout distortion) */}

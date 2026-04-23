@@ -6,6 +6,7 @@ import { Search, ShoppingCart, Menu, X, ChevronRight, User } from 'lucide-react'
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { navItems, products } from '@/lib/site-data';
+import Magnetic from './Magnetic';
 
 export function Header(): React.ReactNode {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -72,52 +73,59 @@ export function Header(): React.ReactNode {
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`text-[12px] tracking-widest font-bold uppercase transition-colors duration-300 ${
-                    isActive ? 'text-[#b48344]' : `${textColorClass} hover:text-[#b48344]`
-                  }`}
-                >
-                  {item.label}
-                </Link>
+                <Magnetic key={item.label}>
+                  <Link
+                    href={item.href}
+                    className={`text-[12px] tracking-widest font-bold uppercase transition-colors duration-300 px-2 py-1 ${
+                      isActive ? 'text-[#b48344]' : `${textColorClass} hover:text-[#b48344]`
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </Magnetic>
               );
             })}
           </nav>
 
           {/* Actions */}
           <div className="flex w-1/3 items-center justify-end gap-5">
-            <button
-               type="button"
-               className={`${textColorClass} hover:text-[#b48344] transition-colors`}
-               onClick={() => setSearchOpen(true)}
-               aria-label="Search"
-            >
-               <Search className="h-5 w-5 stroke-[1.5]" />
-            </button>
-            <button
-               type="button"
-               className={`relative ${textColorClass} hover:text-[#b48344] transition-colors`}
-               onClick={() => setCartOpen(true)}
-               aria-label="Cart"
-            >
-               <ShoppingCart className="h-5 w-5 stroke-[1.5]" />
-               <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#b48344] text-[9px] font-bold text-[#102f23]">
-                 3
-               </span>
-            </button>
-            <Link
-               href="/profile"
-               className={`${textColorClass} hover:text-[#b48344] transition-colors`}
-               aria-label="Profile"
-            >
-               <User className="h-5 w-5 stroke-[1.5]" />
-            </Link>
+            <Magnetic>
+              <button
+                 type="button"
+                 className={`${textColorClass} hover:text-[#b48344] transition-colors p-2`}
+                 onClick={() => setSearchOpen(true)}
+                 aria-label="Search"
+              >
+                 <Search className="h-5 w-5 stroke-[1.5]" />
+              </button>
+            </Magnetic>
+            <Magnetic>
+              <button
+                 type="button"
+                 className={`relative ${textColorClass} hover:text-[#b48344] transition-colors p-2`}
+                 onClick={() => setCartOpen(true)}
+                 aria-label="Cart"
+              >
+                 <ShoppingCart className="h-5 w-5 stroke-[1.5]" />
+                 <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#b48344] text-[9px] font-bold text-[#102f23]">
+                   3
+                 </span>
+              </button>
+            </Magnetic>
+            <Magnetic>
+              <Link
+                 href="/profile"
+                 className={`${textColorClass} hover:text-[#b48344] transition-colors p-2`}
+                 aria-label="Profile"
+              >
+                 <User className="h-5 w-5 stroke-[1.5]" />
+              </Link>
+            </Magnetic>
             
             <button
                type="button"
                onClick={() => setMenuOpen(!menuOpen)}
-               className={`${textColorClass} hover:text-[#b48344] transition-colors md:hidden ml-2`}
+               className={`${textColorClass} hover:text-[#b48344] transition-colors md:hidden ml-2 p-2`}
                aria-label="Menu"
             >
                <Menu className="h-6 w-6 stroke-[1.5]" />
@@ -154,7 +162,8 @@ export function Header(): React.ReactNode {
                              key={p.id}
                              href={`/products/${p.slug}`}
                              onClick={() => setSearchOpen(false)}
-                             className="border border-[#e8e6e1] px-6 py-3 rounded-full text-[13px] font-semibold text-[#102f23] hover:border-[#102f23] hover:bg-[#102f23] hover:text-white transition-all duration-300"
+                             data-cursor-media={p.image}
+                             className="border border-[#e8e6e1] px-6 py-3 rounded-full text-[13px] font-semibold text-[#102f23] hover:border-[#102f23] hover:bg-[#102f23] hover:text-white transition-all duration-300 hover-trigger"
                           >
                              {p.name}
                           </Link>
