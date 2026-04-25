@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuthRoute } from '@/hooks/useAuthRouter';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/Header';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

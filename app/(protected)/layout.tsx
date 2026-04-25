@@ -1,7 +1,7 @@
 'use client';
 
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/Header';
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
