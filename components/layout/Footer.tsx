@@ -1,7 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export function Footer() {
+/**
+ * Footer Component
+ * 
+ * Global site footer providing branding information, navigation links,
+ * contact details, and certifications. Designed with an immersive 
+ * dark aesthetic to match the Gaea Gold premium brand.
+ * 
+ * @returns {React.ReactNode} The rendered footer component
+ */
+export function Footer(): React.ReactNode {
   return (
     <footer className="relative bg-[#102f23] text-[#f9f6f0] selection:bg-[#b48344] selection:text-white border-t-4 border-[#b48344] overflow-hidden">
       
@@ -107,8 +116,6 @@ export function Footer() {
             <div className="flex flex-col items-center"><span className="font-heading text-4xl text-[#e6d5bf] font-bold">PREMIUM</span><span className="text-[9px] uppercase tracking-widest text-[#b48344] font-bold">Export Grade</span></div>
          </div>
       </div>
-
-
 
       {/* Bottom Bar */}
       <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-12 py-8 flex flex-col md:flex-row items-center justify-between gap-6">

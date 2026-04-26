@@ -2,83 +2,24 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import useEmblaCarousel from 'embla-carousel-react';
-import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Product } from '@/lib/site-data';
-import Link from 'next/link';
 
-export default function ProductTabsCarousel({ products }: { products: Product[] }) {
-  // Filter only featured products, either by rating or slice
-  const featuredProducts = products.filter(p => (p.rating && p.rating >= 4.6) || p.badge);
-
-
-  return (
-    <section className="relative py-24 bg-[#f9f6f0] border-b border-[#e8e6e1] overflow-hidden">
-      {/* Minimalistic Farm Pattern Overlay - Pop Enabled */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-60 mix-blend-multiply" 
-          style={{ backgroundImage: 'url(/images/cream_pattern.png)', backgroundSize: '450px', backgroundPosition: 'center', backgroundRepeat: 'repeat' }} />
-          
-      <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-12">
-        <div className="mb-16 flex flex-col items-center justify-center text-center">
-          <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#102f23] mb-4">Our Finest Selection</span>
-          <h2 className="font-heading text-4xl lg:text-5xl font-medium text-[#102f23] mb-6">Handpicked Best Sellers</h2>
-          <div className="h-[1px] w-12 bg-[#102f23]" />
-        </div>
-        
-        <ProductCarousel products={featuredProducts} />
-        
-        <div className="mt-20 flex justify-center">
-          <Link href="/products" className="inline-flex items-center gap-3 border border-[#102f23] px-8 py-4 text-xs font-bold uppercase tracking-[0.2em] text-[#102f23] transition-all bg-transparent hover:bg-[#102f23] hover:text-white">
-            <span>Explore All Products</span>
-            <ChevronRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
+interface ProductCardProps {
+  /** The product data to display */
+  product: Product;
 }
 
-function ProductCarousel({ products }: { products: Product[] }) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: 'start', skipSnaps: false });
-
-  if (!products.length) {
-    return <p className="text-[#6b6b6b] text-center font-serif italic">No exquisite products available at the moment.</p>;
-  }
-
-  return (
-    <div className="relative group/carousel">
-      <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-6 lg:gap-8 pb-8 pt-4">
-          {products.map((product) => (
-            <div
-              key={product.slug}
-              className="flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_23%]"
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <button
-        onClick={() => emblaApi?.scrollPrev()}
-        className="absolute left-0 lg:-left-6 top-[40%] -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-none bg-white border border-[#e8e6e1] text-[#102f23] transition-all duration-300 hover:bg-[#102f23] hover:text-white lg:opacity-0 lg:group-hover/carousel:opacity-100 lg:-translate-x-4 lg:group-hover/carousel:translate-x-0 shadow-md"
-      >
-        <ChevronLeft className="h-5 w-5 stroke-[1.5]" />
-      </button>
-
-      <button
-        onClick={() => emblaApi?.scrollNext()}
-        className="absolute right-0 lg:-right-6 top-[40%] -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-none bg-white border border-[#e8e6e1] text-[#102f23] transition-all duration-300 hover:bg-[#102f23] hover:text-white lg:opacity-0 lg:group-hover/carousel:opacity-100 lg:translate-x-4 lg:group-hover/carousel:translate-x-0 shadow-md"
-      >
-        <ChevronRight className="h-5 w-5 stroke-[1.5]" />
-      </button>
-    </div>
-  );
-}
-
-function ProductCard({ product }: { product: Product }) {
-  // Setup State for Variant
+/**
+ * ProductCard Component
+ * 
+ * Displays a single product with its image, pricing, and variant selection.
+ * Handles local state for selecting different variants (e.g. weights).
+ * 
+ * @param {ProductCardProps} props
+ * @returns {React.ReactNode}
+ */
+export function ProductCard({ product }: ProductCardProps): React.ReactNode {
   const hasVariants = product.variants && product.variants.length > 0;
   const [selectedVariantIdx, setSelectedVariantIdx] = React.useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);

@@ -5,8 +5,8 @@ import Link from 'next/link';
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import TextReveal from './TextReveal';
-import Magnetic from './Magnetic';
+import TextReveal from '../animations/TextReveal';
+import Magnetic from '../animations/Magnetic';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -24,11 +24,20 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 100, damping: 20, mass: 1 },
+    transition: { type: 'spring' as const, stiffness: 100, damping: 20, mass: 1 },
   },
 };
 
-export default function HeroSection() {
+/**
+ * HeroSection Component
+ * 
+ * The main landing section of the website. Uses Framer Motion for scroll
+ * animations and parallax effects. Delivers a high-impact visual first
+ * impression using the Gaea Gold branding.
+ * 
+ * @returns {React.ReactNode} The rendered hero section
+ */
+export function HeroSection(): React.ReactNode {
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,

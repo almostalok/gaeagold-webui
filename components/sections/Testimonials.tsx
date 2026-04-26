@@ -44,7 +44,15 @@ const testimonials = [
 
 const duplicatedTestimonials = [...testimonials, ...testimonials];
 
-export default function Testimonials() {
+/**
+ * Testimonials Component
+ * 
+ * Displays customer reviews in a continuously scrolling infinite marquee.
+ * Utilizes Framer Motion for smooth, hardware-accelerated animations.
+ * 
+ * @returns {React.ReactNode} The rendered Testimonials section
+ */
+export function Testimonials(): React.ReactNode {
   return (
     <section className="py-24 bg-[#102f23] overflow-hidden relative">
       {/* Premium Pattern Background */}

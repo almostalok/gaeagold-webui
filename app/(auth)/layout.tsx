@@ -1,8 +1,8 @@
 'use client';
 
 import { useAuthRoute } from '@/hooks/useAuthRouter';
-import { Footer } from '@/components/Footer';
-import { Header } from '@/components/Header';
+import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const allowed = useAuthRoute();
