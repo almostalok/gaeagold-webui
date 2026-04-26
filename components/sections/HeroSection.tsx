@@ -5,8 +5,8 @@ import Link from 'next/link';
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import TextReveal from '../TextReveal';
-import Magnetic from '../Magnetic';
+import TextReveal from '../animations/TextReveal';
+import Magnetic from '../animations/Magnetic';
 
 const containerVariants = {
   hidden: { opacity: 0 },

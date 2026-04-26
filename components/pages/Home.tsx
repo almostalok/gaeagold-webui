@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { HeroSection } from './sections/HeroSection';
-import FeaturedProducts from './FeaturedProducts';
-import { Testimonials } from './sections/Testimonials';
-import { BrandStory } from './sections/BrandStory';
-import Marquee from './Marquee';
+import { HeroSection } from '../sections/HeroSection';
+import FeaturedProducts from '../sections/FeaturedProducts';
+import { Testimonials } from '../sections/Testimonials';
+import { BrandStory } from '../sections/BrandStory';
+import Marquee from '../animations/Marquee';
 import { products } from '@/lib/site-data';
 import Image from 'next/image';
 import { BadgeCheck, CircleCheckBig, Sprout } from 'lucide-react';

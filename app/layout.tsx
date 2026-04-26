@@ -3,7 +3,7 @@ import Providers from './providers/Providers';
 import { Toaster } from 'sonner';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import Preloader from '@/components/Preloader';
+import Preloader from '@/components/animations/Preloader';
 
 const inter = Inter({
   variable: '--font-sans',

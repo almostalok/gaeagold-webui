@@ -2,7 +2,7 @@
 
 import { useProtectedRoute } from '@/hooks/useProtectedRoute';
 import { Footer } from '@/components/layout/Footer';
-import { Header } from '@/components/Header';
+import { Header } from '@/components/layout/Header';
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const allowed = useProtectedRoute();

@@ -6,10 +6,10 @@ import { Search, ShoppingCart, Menu, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { navItems, products } from '@/lib/site-data';
-import Magnetic from './Magnetic';
-import { CartSidebar } from './layout/CartSidebar';
-import { SearchOverlay } from './layout/SearchOverlay';
-import { MobileMenu } from './layout/MobileMenu';
+import Magnetic from '../animations/Magnetic';
+import { CartSidebar } from './CartSidebar';
+import { SearchOverlay } from './SearchOverlay';
+import { MobileMenu } from './MobileMenu';
 
 /**
  * Header Component

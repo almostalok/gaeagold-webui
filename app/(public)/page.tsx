@@ -1,6 +1,6 @@
 // app/speech-recognition/page.tsx
 'use client';
-import Home from '@/components/Home';
+import Home from '@/components/pages/Home';
 
 export default function SpeechRecognitionPage() {
   return (
