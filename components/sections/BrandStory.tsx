@@ -23,7 +23,16 @@ const itemVariants = {
   },
 };
 
-export default function BrandStory() {
+/**
+ * BrandStory Component
+ * 
+ * Displays the core values and story behind Gaea Gold Harvest.
+ * Utilizes scroll-triggered Framer Motion animations to reveal
+ * the 'Gaea Standard' pillars: Source, Process, and Quality.
+ * 
+ * @returns {React.ReactNode} The rendered Brand Story section
+ */
+export function BrandStory(): React.ReactNode {
   return (
     <section className="relative py-32 bg-[#f9f6f0] text-[#102f23] overflow-hidden">
       {/* Immersive Creme Pattern Backdrop */}

@@ -3,8 +3,8 @@
 import React from 'react';
 import { HeroSection } from './sections/HeroSection';
 import FeaturedProducts from './FeaturedProducts';
-import Testimonials from './Testimonials';
-import BrandStory from './BrandStory';
+import { Testimonials } from './sections/Testimonials';
+import { BrandStory } from './sections/BrandStory';
 import Marquee from './Marquee';
 import { products } from '@/lib/site-data';
 import Image from 'next/image';
