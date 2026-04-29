@@ -4,13 +4,67 @@ import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
-import { categories, Product, products } from '@/lib/site-data';
+import { categories, Product, products as mockProducts } from '@/lib/site-data';
+import { productService, BackendProduct, ProductListResponse } from '@/services/productService';
 
 // Fake Certifications array (the original import had it, but we can reconstruct a simple one if missing)
 const certifications = ['Organic Certified', 'ISO 9001:2015', 'Fair Trade', 'FDA Approved', 'A2 Certified'];
 
 export default function ProductsPage() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = React.useState(false);
+  const [products, setProducts] = React.useState<BackendProduct[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+  const [page, setPage] = React.useState(1);
+  const [limit] = React.useState(10);
+  const [totalPages, setTotalPages] = React.useState(1);
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [selectedCategory, setSelectedCategory] = React.useState('');
+
+  // Fetch products on mount and when filters change
+  React.useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await productService.getProducts({
+          page,
+          limit,
+          search: searchTerm || undefined,
+          category: selectedCategory || undefined,
+        });
+        setProducts(response.data);
+        setTotalPages(response.meta.totalPages);
+      } catch (err) {
+        console.error('Failed to fetch products:', err);
+        setError('Failed to load products. Using demo data.');
+        // Fallback to mock products
+        setProducts(mockProducts.map((p) => ({
+          id: p.id,
+          sku: `SKU-${p.id}`,
+          name: p.name,
+          description: p.description,
+          price: p.price,
+          currency: 'INR',
+          category: { id: p.category, name: p.category },
+          images: [{ id: '1', url: p.image }],
+          specifications: {
+            weight: p.weight,
+            origin: p.origin,
+            type: p.grade,
+          },
+          isActive: true,
+          createdAt: new Date().toISOString(),
+          modifiedAt: new Date().toISOString(),
+        })));
+        setTotalPages(Math.ceil(mockProducts.length / limit));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [page, limit, searchTerm, selectedCategory]);
 
   return (
     <main className="min-h-screen bg-[#f9f6f0] text-[#1a1a1a]">
@@ -38,7 +92,7 @@ export default function ProductsPage() {
 
         {/* Mobile Toolbar (Filter Toggle & Shows Sort on Mobile) */}
         <div className="relative z-10 mb-8 flex flex-col gap-4 sm:flex-row sm:items-center justify-between border-b border-[#e8e6e1] pb-6 lg:hidden">
-          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6b6b6b]">Showing {products.length} Products</p>
+          <p className="text-[10px] font-semibold tracking-widest uppercase text-[#6b6b6b]">Showing {loading ? '...' : products.length} Products</p>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <button 
               onClick={() => setIsMobileFilterOpen(true)}
@@ -66,7 +120,7 @@ export default function ProductsPage() {
                       <X className="w-5 h-5 text-[#102f23]" />
                    </button>
                 </div>
-                <FilterContent />
+                <FilterContent selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
                 <div className="mt-auto pt-8">
                   <button onClick={() => setIsMobileFilterOpen(false)} className="w-full bg-[#102f23] py-4 text-xs font-bold uppercase tracking-widest text-white shadow-md rounded-xl">
                     Show Products
@@ -80,37 +134,84 @@ export default function ProductsPage() {
           {/* Desktop Filters Sidebar */}
           <aside className="sticky top-[100px] hidden h-fit max-h-[calc(100vh-140px)] overflow-y-auto lg:block pr-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             <h2 className="mb-6 font-heading text-xl lg:text-lg font-medium text-[#102f23]">Filters</h2>
-            <FilterContent />
+            <FilterContent selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
           </aside>
 
           {/* Products Grid Area */}
           <div>
             <div className="mb-8 hidden items-center justify-between border-b border-[#e8e6e1] pb-6 lg:flex relative z-50">
-              <p className="text-xs font-semibold tracking-widest uppercase text-[#6b6b6b]">Showing {products.length} Products</p>
+              <p className="text-xs font-semibold tracking-widest uppercase text-[#6b6b6b]">Showing {loading ? '...' : products.length} Products</p>
               <SortDropdown />
             </div>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {products.map((item) => (
-                <GridProductCard key={item.id} product={item} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="flex items-center justify-center py-24">
+                <div className="text-center">
+                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#b48344]"></div>
+                  <p className="mt-4 text-[#6b6b6b] text-sm">Loading products...</p>
+                </div>
+              </div>
+            ) : error ? (
+              <div className="flex items-center justify-center py-24">
+                <div className="text-center text-red-600">
+                  <p className="text-sm">{error}</p>
+                </div>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="flex items-center justify-center py-24">
+                <div className="text-center">
+                  <p className="text-[#6b6b6b] text-sm">No products found</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+                  {products.map((item) => (
+                    <GridProductCard key={item.id} product={item} />
+                  ))}
+                </div>
 
-            <div className="mt-16 flex flex-wrap justify-center gap-2 border-t border-[#e8e6e1] pt-12">
-              {['Prev', '1', '2', '3', 'Next'].map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  className={`border px-5 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all shadow-sm ${
-                    item === '1'
-                      ? 'border-[#b48344] bg-[#b48344] text-white'
-                      : 'border-[#e8e6e1] bg-white text-[#6b6b6b] hover:border-[#102f23] hover:text-[#102f23]'
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
+                {totalPages > 1 && (
+                  <div className="mt-16 flex flex-wrap justify-center gap-2 border-t border-[#e8e6e1] pt-12">
+                    <button
+                      onClick={() => setPage(Math.max(1, page - 1))}
+                      disabled={page === 1}
+                      className={`border px-5 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all shadow-sm ${
+                        page === 1
+                          ? 'border-[#e8e6e1] bg-white text-[#6b6b6b] cursor-not-allowed opacity-50'
+                          : 'border-[#e8e6e1] bg-white text-[#6b6b6b] hover:border-[#102f23] hover:text-[#102f23]'
+                      }`}
+                    >
+                      Prev
+                    </button>
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                      <button
+                        key={pageNum}
+                        onClick={() => setPage(pageNum)}
+                        className={`border px-5 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all shadow-sm ${
+                          pageNum === page
+                            ? 'border-[#b48344] bg-[#b48344] text-white'
+                            : 'border-[#e8e6e1] bg-white text-[#6b6b6b] hover:border-[#102f23] hover:text-[#102f23]'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setPage(Math.min(totalPages, page + 1))}
+                      disabled={page === totalPages}
+                      className={`border px-5 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all shadow-sm ${
+                        page === totalPages
+                          ? 'border-[#e8e6e1] bg-white text-[#6b6b6b] cursor-not-allowed opacity-50'
+                          : 'border-[#e8e6e1] bg-white text-[#6b6b6b] hover:border-[#102f23] hover:text-[#102f23]'
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -118,16 +219,34 @@ export default function ProductsPage() {
   );
 }
 
-function FilterContent() {
+function FilterContent({ selectedCategory, onCategoryChange }: { selectedCategory: string; onCategoryChange: (category: string) => void }) {
+  const [priceRange, setPriceRange] = React.useState([0, 10000]);
+  
   return (
     <>
       <div className="border-t border-[#e8e6e1] py-6 -mt-6 lg:mt-0">
         <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#102f23]">Category</h3>
         <ul className="space-y-3">
+          <li className="flex items-center justify-between text-base">
+            <label className="flex items-center gap-3 text-[#6b6b6b] hover:text-[#102f23] cursor-pointer transition-colors group">
+              <input 
+                type="checkbox" 
+                className="h-4 w-4 accent-[#b48344]" 
+                checked={selectedCategory === ''}
+                onChange={() => onCategoryChange('')}
+              />
+              <span className="group-hover:text-[#b48344] transition-colors">All Categories</span>
+            </label>
+          </li>
           {categories.map((item) => (
             <li key={item.slug} className="flex items-center justify-between text-base">
               <label className="flex items-center gap-3 text-[#6b6b6b] hover:text-[#102f23] cursor-pointer transition-colors group">
-                <input type="checkbox" className="h-4 w-4 accent-[#b48344]" />
+                <input 
+                  type="checkbox" 
+                  className="h-4 w-4 accent-[#b48344]"
+                  checked={selectedCategory === item.name}
+                  onChange={() => onCategoryChange(selectedCategory === item.name ? '' : item.name)}
+                />
                 <span className="group-hover:text-[#b48344] transition-colors">{item.name}</span>
               </label>
               <span className="text-[10px] font-semibold text-[#a0a0a0]">({item.count})</span>
@@ -138,8 +257,15 @@ function FilterContent() {
 
       <div className="border-t border-[#e8e6e1] py-6">
         <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-[#102f23]">Price Range</h3>
-        <input type="range" min={0} max={10000} className="w-full accent-[#b48344]" />
-        <p className="mt-4 text-xs font-semibold text-[#6b6b6b]">₹0 - ₹10,000</p>
+        <input 
+          type="range" 
+          min={0} 
+          max={10000} 
+          value={priceRange[1]}
+          onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+          className="w-full accent-[#b48344]" 
+        />
+        <p className="mt-4 text-xs font-semibold text-[#6b6b6b]">₹{priceRange[0]} - ₹{priceRange[1]}</p>
       </div>
 
       <div className="border-t border-[#e8e6e1] py-6">
@@ -201,81 +327,59 @@ function SortDropdown() {
   );
 }
 
-function GridProductCard({ product }: { product: Product }) {
-  const hasVariants = product.variants && product.variants.length > 0;
-  const [selectedVariantIdx, setSelectedVariantIdx] = React.useState(0);
-  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+function GridProductCard({ product }: { product: BackendProduct }) {
+  const [quantity, setQuantity] = React.useState(1);
   
-  const currentPrice = hasVariants ? product.variants![selectedVariantIdx].price : product.price;
-  const currentWeight = hasVariants ? product.variants![selectedVariantIdx].weight : product.weight;
+  const rawImageUrl = product.images && product.images.length > 0 ? product.images[0].url : '';
+  const imageUrl = rawImageUrl && rawImageUrl.trim().length > 0 ? rawImageUrl : '/images/placeholder.png';
+  const weight = product.specifications?.weight || 'Standard';
+  const origin = product.specifications?.origin || '';
+  const grade = product.specifications?.type || '';
 
   return (
-    <div className="group h-full flex flex-col bg-white border border-[#e8e6e1] transition-all duration-500 hover:border-[#b48344] rounded-[2rem] overflow-visible hover:shadow-[0_10px_40px_rgba(0,0,0,0.06)] shadow-sm">
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-t-[2rem] bg-[#f9f6f0] p-6 flex flex-col items-center justify-center">
-        <Link href={`/products/${product.slug}`} className="absolute inset-0 z-20" />
+    <div className="group h-full flex flex-col bg-white border border-[#e8e6e1] transition-all duration-500 hover:border-[#b48344] rounded-4xl overflow-visible hover:shadow-[0_10px_40px_rgba(0,0,0,0.06)] shadow-sm">
+      <div className="relative aspect-4/5 w-full overflow-hidden rounded-t-4xl bg-[#f9f6f0] p-6 flex flex-col items-center justify-center">
+        <Link href={`/products/${product.id}`} className="absolute inset-0 z-20" />
         <Image 
-          src={product.image} 
+          src={imageUrl} 
           alt={product.name} 
           fill 
           className="object-cover transition-transform duration-1000 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-110" 
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {product.badge && (
-          <span className="absolute top-4 left-4 z-30 bg-white px-3 py-1 text-[9px] uppercase tracking-widest font-bold text-[#b48344] border border-[#e8e6e1] rounded-full shadow-sm pointer-events-none">
-            {product.badge}
-          </span>
-        )}
       </div>
 
-      <div className="flex flex-col flex-1 p-6 pb-8 text-center bg-white border-t border-[#e8e6e1] z-30 relative rounded-b-[2rem]">
+      <div className="flex flex-col flex-1 p-6 pb-8 text-center bg-white border-t border-[#e8e6e1] z-30 relative rounded-b-4xl">
         <h3 className="font-heading text-base sm:text-lg font-medium text-[#102f23] mb-2 leading-tight">
-          <Link href={`/products/${product.slug}`} className="hover:text-[#b48344] transition-colors">{product.name}</Link>
+          <Link href={`/products/${product.id}`} className="hover:text-[#b48344] transition-colors">{product.name}</Link>
         </h3>
         <p className="text-[10px] sm:text-[11px] uppercase tracking-widest text-[#102f23]/50 font-semibold mb-6 flex-1">
-          {product.category}
+          {product.category.name}
         </p>
         
         <div className="mb-4 flex flex-col items-center border-t border-[#e8e6e1] pt-4">
-           <span className="text-lg sm:text-xl font-medium text-[#102f23]">₹{currentPrice}</span>
+           <span className="text-lg sm:text-xl font-medium text-[#102f23]">₹{product.price}</span>
         </div>
         
-        {hasVariants ? (
-          <div className="relative w-full mb-4">
-             <button 
-                type="button" 
-                onClick={(e) => { e.preventDefault(); setIsDropdownOpen(!isDropdownOpen); }}
-                className="w-full flex items-center justify-between border border-[#e8e6e1] bg-[#f9f6f0] px-4 py-2.5 rounded-full text-[10px] sm:text-xs font-bold text-[#102f23] transition-colors hover:border-[#b48344]"
-             >
-                <span>{currentWeight}</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-             </button>
-             
-             {isDropdownOpen && (
-                <div className="absolute left-0 right-0 bottom-full mb-2 bg-white border border-[#e8e6e1] rounded-2xl shadow-xl overflow-hidden z-[100]">
-                   {product.variants!.map((variant, idx) => (
-                      <button
-                         key={idx}
-                         onClick={(e) => { e.preventDefault(); setSelectedVariantIdx(idx); setIsDropdownOpen(false); }}
-                         className={`w-full text-left px-5 py-3 text-[10px] sm:text-xs font-bold border-b border-[#e8e6e1] last:border-0 hover:bg-[#f9f6f0] transition-colors flex justify-between items-center ${idx === selectedVariantIdx ? 'text-[#b48344] bg-[#f9f6f0]' : 'text-[#102f23]'}`}
-                      >
-                         <span>{variant.weight}</span>
-                         <span className="text-[#102f23]/60 font-semibold">₹{variant.price}</span>
-                      </button>
-                   ))}
-                </div>
-             )}
-          </div>
-        ) : (
-          <div className="mb-4">
-             <span className="inline-block px-4 py-2.5 text-[10px] sm:text-xs font-bold text-[#102f23]/60 uppercase tracking-widest w-full text-center">{currentWeight}</span>
-          </div>
-        )}
+        <div className="mb-4">
+           <span className="inline-block px-4 py-2.5 text-[10px] sm:text-xs font-bold text-[#102f23]/60 uppercase tracking-widest w-full text-center">{weight}</span>
+        </div>
         
         <div className="flex w-full items-center justify-between border border-[#e8e6e1] group-hover:border-[#b48344] rounded-full overflow-hidden transition-all duration-300">
            <div className="flex items-center px-3 sm:px-4 bg-[#f9f6f0] border-r border-[#e8e6e1] group-hover:border-[#b48344] transition-colors z-30">
-              <span className="text-sm font-bold text-[#102f23]/40 cursor-pointer hover:text-[#b48344] py-2">-</span>
-              <span className="text-sm font-bold text-[#102f23] px-2 sm:px-3">1</span>
-              <span className="text-sm font-bold text-[#102f23]/40 cursor-pointer hover:text-[#b48344] py-2">+</span>
+              <button 
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="text-sm font-bold text-[#102f23]/40 cursor-pointer hover:text-[#b48344] py-2"
+              >
+                -
+              </button>
+              <span className="text-sm font-bold text-[#102f23] px-2 sm:px-3">{quantity}</span>
+              <button 
+                onClick={() => setQuantity(quantity + 1)}
+                className="text-sm font-bold text-[#102f23]/40 cursor-pointer hover:text-[#b48344] py-2"
+              >
+                +
+              </button>
            </div>
            <button className="flex-1 flex items-center justify-center gap-2 bg-transparent px-2 sm:px-4 py-3 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-[#102f23] group-hover:bg-[#b48344] group-hover:text-white transition-all z-30">
              Add
